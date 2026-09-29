@@ -1,13 +1,12 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { QRCodeCanvas } from "qrcode.react";
 import "./App.css";
 
 function App() {
   const [type, setType] = useState("URL");
-const [text, setText] = useState("");
-
-const [wifiPassword, setWifiPassword] = useState("");
-const [wifiSecurity, setWifiSecurity] = useState("WPA");
+  const [text, setText] = useState("");
+  const [wifiPassword, setWifiPassword] = useState("");
+  const [wifiSecurity, setWifiSecurity] = useState("WPA");
 
   const [size, setSize] = useState(220);
   const [fgColor, setFgColor] = useState("#000000");
@@ -21,26 +20,33 @@ const [wifiSecurity, setWifiSecurity] = useState("WPA");
   });
 
   const getQRValue = () => {
-  if (type === "EMAIL") {
-    return `mailto:${text}`;
-  }
+    if (type === "EMAIL") {
+      return `mailto:${text}`;
+    }
 
-  if (type === "PHONE") {
-    return `tel:${text}`;
-  }
+    if (type === "PHONE") {
+      return `tel:${text}`;
+    }
 
-  if (type === "WIFI") {
-    return `WIFI:T:${wifiSecurity};S:${text};P:${wifiPassword};;`;
-  }
+    if (type === "WIFI") {
+      return `WIFI:T:${wifiSecurity};S:${text};P:${wifiPassword};;`;
+    }
 
-  return text;
-};
+    return text;
+  };
+
   const validateInput = () => {
-    if (!text.trim()) return "Please enter some content.";
+    if (!text.trim()) {
+      return "Please enter some content.";
+    }
 
-if (type === "WIFI" && wifiSecurity !== "nopass" && !wifiPassword.trim()) {
-  return "Please enter the Wi-Fi password.";
-}
+    if (
+      type === "WIFI" &&
+      wifiSecurity !== "nopass" &&
+      !wifiPassword.trim()
+    ) {
+      return "Please enter the Wi-Fi password.";
+    }
 
     if (type === "URL") {
       try {
@@ -101,10 +107,27 @@ if (type === "WIFI" && wifiSecurity !== "nopass" && !wifiPassword.trim()) {
     localStorage.removeItem("qrify-recent");
   };
 
+  const clearInput = () => {
+    setText("");
+    setWifiPassword("");
+  };
+
+  const downloadQR = () => {
+    saveRecentQR();
+
+    const canvas = document.querySelector("canvas");
+
+    if (canvas) {
+      const link = document.createElement("a");
+      link.download = "qrify-qr-code.png";
+      link.href = canvas.toDataURL("image/png");
+      link.click();
+    }
+  };
+
   return (
     <div className="app">
       <div className="card">
-
         <h1>QRify</h1>
 
         <p className="subtitle">
@@ -118,6 +141,7 @@ if (type === "WIFI" && wifiSecurity !== "nopass" && !wifiPassword.trim()) {
           onChange={(e) => {
             setType(e.target.value);
             setText("");
+            setWifiPassword("");
           }}
         >
           <option value="URL">URL</option>
@@ -140,91 +164,92 @@ if (type === "WIFI" && wifiSecurity !== "nopass" && !wifiPassword.trim()) {
         </label>
 
         {type !== "WIFI" ? (
-  <input
-    type="text"
-    placeholder={
-      type === "URL"
-        ? "https://example.com"
-        : type === "TEXT"
-        ? "Enter your text"
-        : type === "EMAIL"
-        ? "example@gmail.com"
-        : "9876543210"
-    }
-    value={text}
-    onChange={(e) => setText(e.target.value)}
-  />
-) : (
-  <>
-    <input
-      type="text"
-      placeholder="Wi-Fi network name"
-      value={text}
-      onChange={(e) => setText(e.target.value)}
-    />
+          <input
+            type="text"
+            placeholder={
+              type === "URL"
+                ? "https://example.com"
+                : type === "TEXT"
+                ? "Enter your text"
+                : type === "EMAIL"
+                ? "example@gmail.com"
+                : "9876543210"
+            }
+            value={text}
+            onChange={(e) => setText(e.target.value)}
+          />
+        ) : (
+          <>
+            <input
+              type="text"
+              placeholder="Wi-Fi network name"
+              value={text}
+              onChange={(e) => setText(e.target.value)}
+            />
 
-    <input
-      type="password"
-      placeholder="Wi-Fi password"
-      value={wifiPassword}
-      onChange={(e) => setWifiPassword(e.target.value)}
-    />
+            <input
+              type="password"
+              placeholder="Wi-Fi password"
+              value={wifiPassword}
+              onChange={(e) => setWifiPassword(e.target.value)}
+            />
 
-    <select
-      value={wifiSecurity}
-      onChange={(e) => setWifiSecurity(e.target.value)}
-    >
-      <option value="WPA">WPA/WPA2</option>
-      <option value="WEP">WEP</option>
-      <option value="nopass">No Password</option>
-    </select>
-  </>
-)}
+            <select
+              value={wifiSecurity}
+              onChange={(e) => setWifiSecurity(e.target.value)}
+            >
+              <option value="WPA">WPA/WPA2</option>
+              <option value="WEP">WEP</option>
+              <option value="nopass">No Password</option>
+            </select>
+          </>
+        )}
 
         {text && error && (
           <p className="error">{error}</p>
         )}
 
-        <div <h2>Presets</h2>
+        <div className="presets">
+          <h2>Presets</h2>
 
-<div className="presets">
-  <button
-    onClick={() => {
-      setFgColor("#000000");
-      setBgColor("#ffffff");
-    }}
-  >
-    Classic
-  </button>
+          <button
+            onClick={() => {
+              setFgColor("#000000");
+              setBgColor("#ffffff");
+            }}
+          >
+            Classic
+          </button>
 
-  <button
-    onClick={() => {
-      setFgColor("#ffffff");
-      setBgColor("#111111");
-    }}
-  >
-    Dark
-  </button>
+          <button
+            onClick={() => {
+              setFgColor("#ffffff");
+              setBgColor("#111111");
+            }}
+          >
+            Dark
+          </button>
 
-  <button
-    onClick={() => {
-      setFgColor("#2563eb");
-      setBgColor("#ffffff");
-    }}
-  >
-    Blue
-  </button>
+          <button
+            onClick={() => {
+              setFgColor("#2563eb");
+              setBgColor("#ffffff");
+            }}
+          >
+            Blue
+          </button>
 
-  <button
-    onClick={() => {
-      setFgColor("#db2777");
-      setBgColor("#ffffff");
-    }}
-  >
-    Pink
-  </button>
-</div>className="customization">
+          <button
+            onClick={() => {
+              setFgColor("#db2777");
+              setBgColor("#ffffff");
+            }}
+          >
+            Pink
+          </button>
+        </div>
 
+        <div className="customization">
           <h2>Customize QR</h2>
 
           <label>
@@ -278,12 +303,10 @@ if (type === "WIFI" && wifiSecurity !== "nopass" && !wifiPassword.trim()) {
             value={margin}
             onChange={(e) => setMargin(Number(e.target.value))}
           />
-
         </div>
 
         {text && !error && (
           <div className="qr-box">
-
             <QRCodeCanvas
               value={getQRValue()}
               size={size}
@@ -292,7 +315,6 @@ if (type === "WIFI" && wifiSecurity !== "nopass" && !wifiPassword.trim()) {
               level={level}
               marginSize={margin}
             />
-
           </div>
         )}
 
@@ -302,34 +324,33 @@ if (type === "WIFI" && wifiSecurity !== "nopass" && !wifiPassword.trim()) {
           </p>
         )}
 
+        {text && (
+          <button
+            className="clear-btn"
+            onClick={clearInput}
+          >
+            Clear Input
+          </button>
+        )}
+
         {text && !error && (
           <button
             className="download-btn"
-            onClick={() => {
-              saveRecentQR();
-
-              const canvas = document.querySelector("canvas");
-
-              if (canvas) {
-                const link = document.createElement("a");
-                link.download = "qrify-qr-code.png";
-                link.href = canvas.toDataURL("image/png");
-                link.click();
-              }
-            }}
+            onClick={downloadQR}
           >
             Download PNG
           </button>
         )}
 
-        {/* RECENT QR CODES */}
-
         {recentQrs.length > 0 && (
-          <div {(fgColor !== "#000000" || bgColor !== "#ffffff") && (
-  <p className="warning">
-    ⚠️ Custom colors may affect QR scanning. Use high contrast for best results.
-  </p>
-)} className="recent-section">
+          <div className="recent-section">
+            {(fgColor !== "#000000" ||
+              bgColor !== "#ffffff") && (
+              <p className="warning">
+                ⚠️ Custom colors may affect QR scanning.
+                Use high contrast for best results.
+              </p>
+            )}
 
             <div className="recent-header">
               <h2>Recent QR Codes</h2>
@@ -356,10 +377,12 @@ if (type === "WIFI" && wifiSecurity !== "nopass" && !wifiPassword.trim()) {
                 <span>↗</span>
               </div>
             ))}
-
           </div>
         )}
 
+        <div className="footer">
+          <p>Made with ❤️ using React</p>
+        </div>
       </div>
     </div>
   );

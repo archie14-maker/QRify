@@ -5,6 +5,8 @@
 body {
   margin: 0;
   font-family: Arial, sans-serif;
+  background: #f4f4f5;
+  color: #111;
 }
 
 .app {
@@ -12,53 +14,63 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  background: #f4f4f5;
-  padding: 20px;
+  padding: 25px;
 }
 
 .card {
-  width: 420px;
+  width: 460px;
   max-width: 100%;
   padding: 35px;
   background: white;
-  border-radius: 20px;
+  border-radius: 24px;
   text-align: center;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.12);
 }
 
 h1 {
   margin: 0;
-  font-size: 42px;
+  font-size: 44px;
+  font-weight: 800;
+  letter-spacing: -1px;
 }
 
 .subtitle {
   color: #666;
-  margin-bottom: 25px;
+  margin: 8px 0 28px;
+  font-size: 15px;
 }
 
 label {
   display: block;
   text-align: left;
-  margin-top: 15px;
+  margin-top: 16px;
   margin-bottom: 7px;
   font-weight: bold;
   font-size: 14px;
 }
 
 input[type="text"],
+input[type="password"],
 select {
   width: 100%;
   padding: 14px;
-  border: 1px solid #ccc;
-  border-radius: 10px;
+  border: 1px solid #d4d4d8;
+  border-radius: 11px;
   font-size: 16px;
   background: white;
+  transition: 0.2s;
+}
+
+input[type="password"] {
+  margin-top: 10px;
 }
 
 input[type="text"]:focus,
+input[type="password"]:focus,
 select:focus {
   outline: none;
-  border-color: #555;
+  border-color: #111;
+  box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.06);
 }
 
 input[type="range"] {
@@ -75,25 +87,60 @@ input[type="color"] {
   cursor: pointer;
 }
 
+.presets {
+  margin-top: 25px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 9px;
+}
+
+.presets h2 {
+  grid-column: 1 / -1;
+  text-align: left;
+  margin: 0 0 3px;
+  font-size: 20px;
+}
+
+.presets button {
+  padding: 11px;
+  border: 1px solid #d4d4d8;
+  border-radius: 9px;
+  background: white;
+  cursor: pointer;
+  font-weight: bold;
+  transition: 0.2s;
+}
+
+.presets button:hover {
+  background: #f0f0f0;
+  transform: translateY(-1px);
+}
+
 .customization {
   margin-top: 25px;
   padding: 20px;
-  background: #f8f8f8;
-  border-radius: 15px;
+  background: #f7f7f8;
+  border-radius: 16px;
+  text-align: left;
 }
 
 .customization h2 {
-  margin-top: 0;
+  margin: 0 0 15px;
   font-size: 20px;
+}
+
+.customization label {
+  margin-top: 13px;
 }
 
 .qr-box {
   margin-top: 25px;
   display: flex;
   justify-content: center;
-  padding: 20px;
+  padding: 22px;
   background: white;
-  border-radius: 15px;
+  border: 1px solid #eee;
+  border-radius: 16px;
 }
 
 .hint {
@@ -101,28 +148,56 @@ input[type="color"] {
   font-size: 14px;
   margin-top: 25px;
 }
+
 .download-btn {
   width: 100%;
-  margin-top: 20px;
+  margin-top: 12px;
   padding: 14px;
   border: none;
-  border-radius: 10px;
+  border-radius: 11px;
   background: #111;
   color: white;
   font-size: 16px;
   font-weight: bold;
   cursor: pointer;
+  transition: 0.2s;
 }
 
 .download-btn:hover {
-  opacity: 0.85;
+  background: #333;
+  transform: translateY(-1px);
 }
+
+.clear-btn {
+  margin-top: 12px;
+  padding: 10px 16px;
+  border: 1px solid #ddd;
+  border-radius: 9px;
+  background: white;
+  color: #d32f2f;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.clear-btn:hover {
+  background: #fff1f1;
+}
+
 .error {
   color: #d32f2f;
   font-size: 13px;
   text-align: left;
   margin-top: 8px;
 }
+
+.warning {
+  color: #8a6200;
+  background: #fff8df;
+  padding: 10px;
+  border-radius: 9px;
+  font-size: 12px;
+}
+
 .recent-section {
   margin-top: 30px;
   text-align: left;
@@ -139,27 +214,21 @@ input[type="color"] {
   font-size: 20px;
 }
 
-.clear-btn {
-  border: none;
-  background: transparent;
-  color: #d32f2f;
-  cursor: pointer;
-  font-weight: bold;
-}
-
 .recent-item {
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-top: 10px;
-  padding: 12px;
+  padding: 13px;
   background: #f5f5f5;
   border-radius: 10px;
   cursor: pointer;
+  transition: 0.2s;
 }
 
 .recent-item:hover {
   background: #eaeaea;
+  transform: translateX(2px);
 }
 
 .recent-item strong {
@@ -170,40 +239,37 @@ input[type="color"] {
   margin: 4px 0 0;
   font-size: 13px;
   color: #666;
-  max-width: 250px;
+  max-width: 270px;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
-input[type="password"] {
-  width: 100%;
-  padding: 14px;
-  margin-top: 10px;
-  border: 1px solid #ccc;
-  border-radius: 10px;
-  font-size: 16px;
+
+.footer {
+  margin-top: 30px;
+  padding-top: 15px;
+  border-top: 1px solid #eee;
+  color: #888;
+  font-size: 12px;
 }
 
-input[type="password"]:focus {
-  outline: none;
-  border-color: #555;
-}
-.presets {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 8px;
-  margin-bottom: 15px;
-}
+@media (max-width: 500px) {
+  .app {
+    padding: 12px;
+    align-items: flex-start;
+  }
 
-.presets button {
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  background: white;
-  cursor: pointer;
-  font-weight: bold;
-}
+  .card {
+    margin-top: 15px;
+    padding: 24px 18px;
+    border-radius: 18px;
+  }
 
-.presets button:hover {
-  background: #eeeeee;
+  h1 {
+    font-size: 36px;
+  }
+
+  .subtitle {
+    margin-bottom: 20px;
+  }
 }
